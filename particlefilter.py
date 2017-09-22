@@ -34,7 +34,7 @@ class ParticalFilter2D:
     '''
     def __init__(self,particle_num=200,
                  observation_sigma=0.5,
-                 noise_sigma = 0.1):
+                 noise_sigma = [0.1,10.0/180.0 * np.pi]):
         '''
 
         :param particle_num:
@@ -67,11 +67,16 @@ class ParticalFilter2D:
     def update_state(self,observation_pose,dt=0.5):
 
         # add noise and update state
-        self.p_state[:,2:] += np.random.normal(0.0,self.noise_sigma_,
-                                               size = (self.particle_num_,2))
+        self.p_state[:,2] += np.random.normal(0.0,self.noise_sigma_[0],
+                                               size = (self.particle_num_))
+        self.p_state[:,3] += np.random.normal(0.0,self.noise_sigma_[1],
+                                              size= self.particle_num_)
+        # for i in range(self.particle_num_):
+        #     while self.p_state[i,3] < -np.pi or
+        #     if (self.p_state[i,3]
 
-        self.p_state[:,0] += dt * self.p_state[:,2]
-        self.p_state[:,1] += dt * self.p_state[:,3]
+        self.p_state[:,0] += dt * (self.p_state[:,2]*np.sin(self.p_state[:,3]))
+        self.p_state[:,1] += dt * (self.p_state[:,3]*np.cos(self.p_state[:,3]))
 
 
 
@@ -83,9 +88,13 @@ class ParticalFilter2D:
                     self.observation_sigma_) + 1e-10
 
             self.p_cov[i] *= score
-            out_pose += self.p_cov[i] * self.p_state[i,:2]
-        out_pose /= self.p_cov.sum()
+
+            # out_pose += self.p_cov[i] * self.p_state[i,:2]
+        # out_pose /= self.p_cov.sum()
         self.p_cov /= self.p_cov.sum()
+        print(self.p_cov)
+        for i in range(self.particle_num_):
+            out_pose += self.p_cov[i] * self.p_state[i,:2]
 
 
         # resample
@@ -104,7 +113,7 @@ class ParticalFilter2D:
         for i in range(self.particle_num_):
             index = 0
             while rnd_score[i] > 0.00001 and index < self.particle_num_-1:
-                rnd_score -= beta[index]
+                rnd_score -= tmp_cov_vecotr[index]
                 index += 1
             self.p_state[i,:] = tmp_sample_vector[index,:]
             self.p_cov[i] = tmp_cov_vecotr[index]

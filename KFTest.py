@@ -43,7 +43,7 @@ if __name__ == '__main__':
     for line_str in all_linex:
 
         result = re.findall('\d{1,3}\.{0,1}\d{1,2}',line_str.split(' ')[0])
-        print(result)
+        # print(result)
 
         src_pose[src_index,0] = float(result[0])
         src_pose[src_index,1] = float(result[1])
@@ -52,11 +52,12 @@ if __name__ == '__main__':
 
 
     res_pose = src_pose * 1.0
-    pf = particlefilter.ParticalFilter2D(2000,0.5,0.01)
+    pf = particlefilter.ParticalFilter2D(1000,0.5,[0.1,10.0/180.0*np.pi])
     pf.initial_filter(res_pose[0,:])
 
     for i in range(src_pose.shape[0]):
         res_pose[i,:] = pf.update_state(src_pose[i,:])
+
 
 
 
