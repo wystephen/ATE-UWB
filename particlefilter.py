@@ -28,6 +28,9 @@ import scipy as sp
 
 import math
 
+
+import matplotlib.pyplot as plt
+
 class ParticalFilter2D:
     '''
     particle filter , with only velocity ,orientation, and position(x,y).
@@ -75,8 +78,10 @@ class ParticalFilter2D:
         #     while self.p_state[i,3] < -np.pi or
         #     if (self.p_state[i,3]
 
-        self.p_state[:,0] += dt * (self.p_state[:,2]*np.sin(self.p_state[:,3]))
-        self.p_state[:,1] += dt * (self.p_state[:,3]*np.cos(self.p_state[:,3]))
+        # self.p_state[:,0] += dt * (self.p_state[:,2]*np.sin(self.p_state[:,3]))
+        # self.p_state[:,1] += dt * (self.p_state[:,3]*np.cos(self.p_state[:,3]))
+        self.p_state[:,0] += dt * self.p_state[:,2]
+        self.p_state[:,1] += dt * self.p_state[:,3]
 
 
 
@@ -90,6 +95,9 @@ class ParticalFilter2D:
             self.p_cov[i] *= (score+0.0000001)
 
             # out_pose += self.p_cov[i] * self.p_state[i,:2]
+        plt.figure()
+        plt.plot(self.p_cov)
+        plt.show()
         # out_pose /= self.p_cov.sum()
         self.p_cov /= np.sum(self.p_cov)
         # print(self.p_cov)
