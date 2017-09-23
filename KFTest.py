@@ -51,7 +51,7 @@ if __name__ == '__main__':
         src_index += 1
 
     res_pose = src_pose * 1.0
-    pf = particlefilter.ParticalFilter2D(1000, 5.5, [0.15, 0.15])
+    pf = particlefilter.ParticalFilter2D(300, 20.5, [0.1, 0.1])
     pf.initial_filter(res_pose[0, :])
 
     for i in range(100):

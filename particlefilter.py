@@ -90,9 +90,9 @@ class ParticalFilter2D:
         for i in range(self.particle_num_):
             score = self.normal_pdf(np.linalg.norm(self.p_state[i,:2]-observation_pose),
                     0.0,
-                    self.observation_sigma_) + 1e-10
+                    self.observation_sigma_) + 1e-15
 
-            self.p_cov[i] *=((score+0.0000000001))
+            self.p_cov[i] +=((score))
 
             # out_pose += self.p_cov[i] * self.p_state[i,:2]
 
@@ -107,21 +107,21 @@ class ParticalFilter2D:
 
 
         # resample
-        beta = np.zeros_like(self.p_cov)
-        for i in range(self.particle_num_):
-            if i == 0:
-                beta[i] = self.p_cov[i]
-            else:
-                beta[i] = beta[i-1] + self.p_cov[i]
+        # beta = np.zeros_like(self.p_cov)
+        # for i in range(self.particle_num_):
+        #     if i == 0:
+        #         beta[i] = self.p_cov[i]
+        #     else:
+        #         beta[i] = beta[i-1] + self.p_cov[i]
 
-        tmp_sample_vector = self.p_state * 1.0
-        tmp_cov_vecotr = self.p_cov * 1.0
+        tmp_sample_vector = self.p_state.copy()
+        tmp_cov_vecotr = self.p_cov.copy()
 
         rnd_score = np.random.uniform(0.0,1.0,self.p_cov.shape)
 
         for i in range(self.particle_num_):
             index = 0
-            while rnd_score[i] > 0.00001 and index < self.particle_num_-1:
+            while rnd_score[i] > 0.0000000000000001 and index < self.particle_num_-1:
                 rnd_score[i] -= tmp_cov_vecotr[index]
                 index += 1
             self.p_state[i,:] = tmp_sample_vector[index,:]
@@ -141,7 +141,7 @@ class ParticalFilter2D:
         para1 = 1.0/(np.sqrt(2.0 * np.pi)*sigma)
         para2 = (x-miu)**2.0 / 2.0 / sigma /sigma
 
-        return para1 * np.exp(-para2)
+        return (para1)* np.exp(-para2)
 
 
 
