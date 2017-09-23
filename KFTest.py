@@ -51,18 +51,19 @@ if __name__ == '__main__':
         src_index += 1
 
     res_pose = src_pose * 1.0
-    pf = particlefilter.ParticalFilter2D(1000, 3.5, [0.01, 0.01])
+    pf = particlefilter.ParticalFilter2D(4000, 1.5, [0.05, 0.05])
     pf.initial_filter(res_pose[0, :])
 
-    for i in range(src_pose.shape[0]):
+    for i in range(100):
+
         res_pose[i, :] = pf.update_state(src_pose[i, :], dt=0.5)
 
     np.savetxt('test_data.txt', src_pose)
 
     plt.figure()
     plt.grid(True)
-    plt.plot(src_pose[:, 0], src_pose[:, 1], 'r-+')
-    plt.plot(res_pose[:, 0], res_pose[:, 1], 'b-+')
+    plt.plot(src_pose[:100, 0], src_pose[:100, 1], 'r-+')
+    plt.plot(res_pose[:100, 0], res_pose[:100, 1], 'b-+')
 
     plt.figure()
     plt.plot(src_pose[:, 0], 'r-*')

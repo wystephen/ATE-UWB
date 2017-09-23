@@ -92,15 +92,16 @@ class ParticalFilter2D:
                     0.0,
                     self.observation_sigma_) + 1e-10
 
-            self.p_cov[i] *= (score+0.0000001)
+            self.p_cov[i] *= np.log((score+1.0000000001))
 
             # out_pose += self.p_cov[i] * self.p_state[i,:2]
-        plt.figure()
-        plt.plot(self.p_cov)
-        plt.show()
+
         # out_pose /= self.p_cov.sum()
         self.p_cov /= np.sum(self.p_cov)
         # print(self.p_cov)
+        # plt.figure()
+        # plt.plot(self.p_cov)
+        # plt.show()
         for i in range(self.particle_num_):
             out_pose += self.p_cov[i] * self.p_state[i,:2]
 
@@ -121,7 +122,7 @@ class ParticalFilter2D:
         for i in range(self.particle_num_):
             index = 0
             while rnd_score[i] > 0.00001 and index < self.particle_num_-1:
-                rnd_score -= tmp_cov_vecotr[index]
+                rnd_score[i] -= tmp_cov_vecotr[index]
                 index += 1
             self.p_state[i,:] = tmp_sample_vector[index,:]
             self.p_cov[i] = tmp_cov_vecotr[index]
