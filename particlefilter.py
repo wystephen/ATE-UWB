@@ -92,7 +92,7 @@ class ParticalFilter2D:
                     0.0,
                     self.observation_sigma_) + 1e-10
 
-            self.p_cov[i] *= np.log((score+1.0000000001))
+            self.p_cov[i] *=((score+0.0000000001))
 
             # out_pose += self.p_cov[i] * self.p_state[i,:2]
 
@@ -126,6 +126,7 @@ class ParticalFilter2D:
                 index += 1
             self.p_state[i,:] = tmp_sample_vector[index,:]
             self.p_cov[i] = tmp_cov_vecotr[index]
+
 
         self.p_cov /= self.p_cov.sum()
 

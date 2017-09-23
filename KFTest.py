@@ -51,10 +51,11 @@ if __name__ == '__main__':
         src_index += 1
 
     res_pose = src_pose * 1.0
-    pf = particlefilter.ParticalFilter2D(4000, 1.5, [0.05, 0.05])
+    pf = particlefilter.ParticalFilter2D(1000, 5.5, [0.15, 0.15])
     pf.initial_filter(res_pose[0, :])
 
     for i in range(100):
+        print("i:",i)
 
         res_pose[i, :] = pf.update_state(src_pose[i, :], dt=0.5)
 
@@ -64,6 +65,9 @@ if __name__ == '__main__':
     plt.grid(True)
     plt.plot(src_pose[:100, 0], src_pose[:100, 1], 'r-+')
     plt.plot(res_pose[:100, 0], res_pose[:100, 1], 'b-+')
+    for i in range(100):
+        plt.plot([src_pose[i,0],res_pose[i,0]],
+        [src_pose[i,1],res_pose[i,1]],'y-')
 
     plt.figure()
     plt.plot(src_pose[:, 0], 'r-*')
