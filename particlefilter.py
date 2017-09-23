@@ -84,15 +84,15 @@ class ParticalFilter2D:
         out_pose = np.zeros(2)
         for i in range(self.particle_num_):
             score = self.normal_pdf(np.linalg.norm(self.p_state[i,:2]-observation_pose),
-                    0,
+                    0.0,
                     self.observation_sigma_) + 1e-10
 
-            self.p_cov[i] *= score
+            self.p_cov[i] *= (score+0.0000001)
 
             # out_pose += self.p_cov[i] * self.p_state[i,:2]
         # out_pose /= self.p_cov.sum()
-        self.p_cov /= self.p_cov.sum()
-        print(self.p_cov)
+        self.p_cov /= np.sum(self.p_cov)
+        # print(self.p_cov)
         for i in range(self.particle_num_):
             out_pose += self.p_cov[i] * self.p_state[i,:2]
 

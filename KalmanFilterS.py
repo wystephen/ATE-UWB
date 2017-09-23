@@ -23,4 +23,6 @@
          佛祖保佑       永无BUG 
 '''
 class KalmanFilter:
-    def __init__(self):
+    def __init__(self,eval_sigma=[0.1,0.1],
+                 noise_sigma=[0.1,0.1],
+                 ):

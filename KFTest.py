@@ -40,10 +40,14 @@ if __name__ == '__main__':
     src_pose = np.zeros([len(all_linex),2])
     src_index = 0
 
+
     for line_str in all_linex:
 
-        result = re.findall('\d{1,3}\.{0,1}\d{1,2}',line_str.split(' ')[0])
-        # print(result)
+        result = list()
+        # result = re.findall('\d{1,3}\.{0,1}\d{0,2}',line_str.split(' ')[0])
+        # print(result,line_str)
+        result.append(line_str.split(':')[1].split(',')[0])
+        result.append(line_str.split(',')[1].split(' ')[0])
 
         src_pose[src_index,0] = float(result[0])
         src_pose[src_index,1] = float(result[1])
@@ -52,11 +56,13 @@ if __name__ == '__main__':
 
 
     res_pose = src_pose * 1.0
-    pf = particlefilter.ParticalFilter2D(1000,0.5,[0.1,10.0/180.0*np.pi])
+    pf = particlefilter.ParticalFilter2D(1000,3.5,[0.1,10.0/180.0*np.pi])
     pf.initial_filter(res_pose[0,:])
 
     for i in range(src_pose.shape[0]):
         res_pose[i,:] = pf.update_state(src_pose[i,:])
+
+    np.savetxt('test_data.txt',src_pose)
 
 
 
@@ -65,6 +71,10 @@ if __name__ == '__main__':
     plt.grid(True)
     plt.plot(src_pose[:,0],src_pose[:,1],'r-+')
     plt.plot(res_pose[:,0],res_pose[:,1],'b-+')
+
+    plt.figure()
+    plt.plot(src_pose[:,0],'r-*')
+    plt.plot(src_pose[:,1],'b-*')
     plt.show()
 
 
