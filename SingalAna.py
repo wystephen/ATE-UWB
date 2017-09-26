@@ -28,7 +28,11 @@ import scipy as sp
 
 import matplotlib.pyplot as plt
 
+# import statmodels.api as sm
+
 import os
+
+list#__getitem__
 
 if __name__ == '__main__':
     dir_name = "./Data/SignalAna/"
@@ -52,6 +56,8 @@ if __name__ == '__main__':
 
             real_distance = np.zeros(beacon_sets.shape[0])
 
+
+            # plot error
             plt.figure()
             for i in range(beacon_sets.shape[0]):
                 real_distance[i] = np.linalg.norm(
@@ -66,6 +72,31 @@ if __name__ == '__main__':
             plt.ylim(-3.0,3.0)
             plt.savefig(data_dir+file_name.split('.csv')[0].split('T105-')[1]+'error'+'.jpg',dpi=1000)
             # plt.show()
+
+            #plot real and data
+            plt.figure()
+            for i in range(beacon_sets.shape[0]):
+                plt.plot(tmp_data[:,i],'.',label='A'+str(i))
+
+            plt.grid()
+            plt.legend()
+            plt.title(file_name+'measurement')
+            plt.ylim(0.0,np.max(tmp_data))
+            plt.savefig(data_dir+file_name.split('.csv')[0].split('T105-')[1]+'measurement'+'.jpg',dpi=1000)
+
+
+
+
+            errandcov = np.zeros([beacon_sets.shape[0],2])
+            plt.figure()
+            for i in range(beacon_sets.shape[0]):
+                normal_list = np.where(tmp_data[:,i]>0.0)
+                # print('normal_list', normal_list)
+                tmp_col_data = tmp_data[normal_list[0],i]
+                plt.plot(tmp_col_data,'r-',label=str(i))
+            plt.show()
+
+
             print(real_distance)
 
 
