@@ -63,8 +63,8 @@ if __name__ == '__main__':
             plt.grid()
             plt.legend()
             plt.title(file_name)
-            plt.ylim(-2.0,2.0)
-            plt.savefig(file_name.split('.csv')[0].split('T105-')[1]+'.jpg',dpi=1000)
+            plt.ylim(-3.0,3.0)
+            plt.savefig(data_dir+file_name.split('.csv')[0].split('T105-')[1]+'error'+'.jpg',dpi=1000)
             # plt.show()
             print(real_distance)
 
