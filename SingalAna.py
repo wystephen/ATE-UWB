@@ -125,4 +125,4 @@ if __name__ == '__main__':
                  test_point_name[i])
     plt.grid()
     plt.legend()
-    plt.savefig(dir_name + 'plane_show.jpg',dpi=1000)
+    plt.savefig(dir_name + 'plane_show.jpg', dpi=1000)
