@@ -35,6 +35,7 @@ import os
 list  # __getitem__
 
 if __name__ == '__main__':
+    # TODO:Never use it before change the way of save error and std..
     dir_name = "./Data/SignalAna/"
     anchor_sets_file_name = dir_name + "anchor-location.csv"
     data_dir = dir_name + "data/"
