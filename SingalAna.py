@@ -57,7 +57,9 @@ if __name__ == '__main__':
                 real_distance[i] = np.linalg.norm(
                     beacon_sets[i, :] - tag_pose
                 )
-                plt.plot((tmp_data[:,i]-real_distance[i]),'.',label=str(i))
+                plt.plot((tmp_data[:,i]-real_distance[i]),
+                         '.',
+                         label='A'+str(i))
             plt.grid()
             plt.legend()
             plt.title(file_name)
