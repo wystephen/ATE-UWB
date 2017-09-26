@@ -43,7 +43,7 @@ if __name__ == '__main__':
             print("filename :", data_dir+file_name)
             tmp_data = np.genfromtxt(data_dir+file_name,
                                      delimiter=',',
-                                     filling_values=-1.0)
+                                     filling_values=-1000.0)
 
             tag_pose = np.zeros(3)
             tag_pose[0] = float(file_name.split('-')[1])
@@ -57,12 +57,12 @@ if __name__ == '__main__':
                 real_distance[i] = np.linalg.norm(
                     beacon_sets[i, :] - tag_pose
                 )
-                plt.plot(tmp_data[:,i]-real_distance[i],'*',label=str(i))
+                plt.plot((tmp_data[:,i]-real_distance[i]),'.',label=str(i))
             plt.grid()
             plt.legend()
             plt.title(file_name)
-            plt.ylim(0.0,10.0)
-            plt.savefig(file_name.split('.csv')[0].split('T105-')[1]+'.jpg')
+            plt.ylim(-2.0,2.0)
+            plt.savefig(file_name.split('.csv')[0].split('T105-')[1]+'.jpg',dpi=1000)
             # plt.show()
             print(real_distance)
 
