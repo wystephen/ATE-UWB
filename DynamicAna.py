@@ -30,7 +30,7 @@ import scipy as sp
 
 if __name__ == '__main__':
     dir_name = "./Data/DynamicAna/"
-    anchor_file_name = dir_name+"anchor-location(1).csv"
+    anchor_file_name = dir_name+"anchor-location (1).csv"
 
     beacon_sets = np.loadtxt(anchor_file_name,delimiter=',')
 
