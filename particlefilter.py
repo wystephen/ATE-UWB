@@ -54,6 +54,11 @@ class ParticalFilter2D:
         self.observation_sigma_ = observation_sigma
         self.noise_sigma_ = noise_sigma
 
+        self.beacon_sets = np.zeros([1,3])
+
+    def setBeaconsets(self,beaconsets):
+        self.beacon_sets = beaconsets
+
     def initial_filter(self, initial_state):
         '''
 
